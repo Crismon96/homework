@@ -17,7 +17,7 @@ export const TimeDisplay = styled.div`
 `;
 
 export const TimerDescriptionInput = styled(TextField)`
-  width: 100%;
+  width: 25rem;
   height: 4.375rem;
 
   .Mui-error {
