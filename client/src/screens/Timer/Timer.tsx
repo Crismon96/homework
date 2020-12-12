@@ -3,11 +3,12 @@ import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 import ReplayIcon from '@material-ui/icons/Replay';
 import StopIcon from '@material-ui/icons/Stop';
 import React, { useEffect, useRef, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import TimerDescriptionInput from '../../components/TimerDescriptionInput/TimerDescriptionInput';
 import { TimerCreation } from '../../generated/graphql';
 import { formatTimeToView } from '../../utils/times';
 import useCreateTimer from './hooks/useCreateTimer';
-import { TimeDisplay, TimerActionButtons, TimerCard, TimerContainer, TimerDescriptionInput } from './timer.styles';
+import { TimeDisplay, TimerActionButtons, TimerCard, TimerContainer } from './timer.styles';
 
 function Timer() {
   const [isMeassuring, setIsMeassuring] = useState(false);
@@ -20,8 +21,6 @@ function Timer() {
 
   const { createTimer } = useCreateTimer();
 
-  const maxLength = 200;
-  const maxLengthModifier = 10;
   let secondsIntervall: number;
 
   const handleStartTimer = () => {
@@ -78,33 +77,7 @@ function Timer() {
             <h1>{isMeassuring ? formatTimeToView(recordedTime) : displayValue}</h1>
           </TimeDisplay>
 
-          <Controller
-            control={control}
-            name="description"
-            rules={{
-              required: 'This field cannot be empty',
-              validate: (value: string) => value?.length <= maxLength || 'The provided description is too long',
-            }}
-            defaultValue=""
-            render={(props) => (
-              <TimerDescriptionInput
-                {...props}
-                label={'timers description'}
-                autoFocus
-                error={Boolean(errors.description)}
-                helperText={
-                  errors.description
-                    ? errors.description.message
-                    : props.value && props.value.length >= maxLength - maxLengthModifier
-                    ? `${props.value.length}/${maxLength}`
-                    : ''
-                }
-                InputProps={{ id: 'timerDescription' }}
-                inputProps={{ maxLength }}
-                InputLabelProps={{ htmlFor: 'timerDescription' }}
-              />
-            )}
-          />
+          <TimerDescriptionInput control={control} errors={errors} />
 
           <TimerActionButtons>
             <IconButton disabled={!isMeassuring}>

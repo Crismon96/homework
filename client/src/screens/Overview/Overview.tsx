@@ -1,7 +1,8 @@
 import { useQuery } from '@apollo/client';
-import { Button, Table, TableFooter, TablePagination } from '@material-ui/core';
+import { Button, Dialog, Table, TableFooter, TablePagination } from '@material-ui/core';
 import React, { useState } from 'react';
 import { TimerListQuery, TimerListQueryVariables } from '../../generated/graphql';
+import EditTimer from './components/EditTimer/EditTimer';
 import OverviewTableBody from './components/OverviewTableBody/OverviewTableBody';
 import OverviewTableHeader from './components/OverviewTableHeader/OverviewTableHeader';
 import { FilterInput, FullBodyTableContainer } from './overview.styles';
@@ -12,7 +13,7 @@ export function Overview() {
   const [timersPerPage, setTimersPerPage] = useState(10);
   const [filterString, setFilterString] = useState('');
   const [filterInputValue, setFilterInputValue] = useState('');
-  // const [showDashboardDialog, setShowDashboardDialog] = useState(false);
+  const [editTimerId, setEditTimerId] = useState<string | null>(null);
 
   const { data, loading } = useQuery<TimerListQuery, TimerListQueryVariables>(timerListQuery, {
     fetchPolicy: 'cache-and-network',
@@ -25,6 +26,8 @@ export function Overview() {
     description?.toLowerCase().includes(lowerCaseFilterString)
   );
 
+  const editTimerMode = Boolean(editTimerId);
+
   if (!data && loading) {
     // show loading spinner
     return null;
@@ -34,7 +37,7 @@ export function Overview() {
         <FullBodyTableContainer>
           <Table size="small" stickyHeader>
             <OverviewTableHeader />
-            <OverviewTableBody timers={data?.timers.timers} />
+            <OverviewTableBody timers={data?.timers.timers} setEditTimerId={setEditTimerId} />
           </Table>
         </FullBodyTableContainer>
 
@@ -60,6 +63,12 @@ export function Overview() {
           />
           <Button onClick={() => setFilterString(filterInputValue)}>Search!</Button>
         </TableFooter>
+
+        {editTimerMode && (
+          <Dialog open={editTimerMode} onClose={() => setEditTimerId(null)} maxWidth="lg" fullWidth>
+            <EditTimer id={editTimerId!} handleDialogClose={() => setEditTimerId(null)} />
+          </Dialog>
+        )}
       </>
     );
   } else {

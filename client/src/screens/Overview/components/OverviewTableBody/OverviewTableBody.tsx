@@ -1,19 +1,16 @@
 import { IconButton, TableBody, TableCell, TableRow } from '@material-ui/core';
 import Delete from '@material-ui/icons/Delete';
 import Settings from '@material-ui/icons/Settings';
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React from 'react';
 import { Timer } from '../../../../generated/graphql';
 import { OneLineCell } from '../../../../utils/appStyles.styles';
 
 type Props = {
   timers: Timer[];
+  setEditTimerId: (id: string | null) => void;
 };
 
-function OverviewTableBody({ timers }: Props) {
-  const history = useHistory();
-  const [selectedDashboardIdInDialog, setSelectedDashboardIdInDialog] = useState<string | null>();
-
+function OverviewTableBody({ timers, setEditTimerId }: Props) {
   return (
     <TableBody>
       {timers.length ? (
@@ -22,12 +19,18 @@ function OverviewTableBody({ timers }: Props) {
             <TableCell>{singleTimer.description}</TableCell>
 
             <OneLineCell align="right">
-              <IconButton size="medium" aria-label="Delete" title="Delete" disabled>
-                <Delete fontSize="small" />
+              <IconButton
+                size="medium"
+                color="primary"
+                aria-label="Edit"
+                title="Edit"
+                onClick={() => setEditTimerId(singleTimer.id)}
+              >
+                <Settings fontSize="small" />
               </IconButton>
 
-              <IconButton size="medium" color="primary" aria-label="Edit" title="Edit">
-                <Settings fontSize="small" />
+              <IconButton size="medium" aria-label="Delete" title="Delete" disabled>
+                <Delete fontSize="small" />
               </IconButton>
             </OneLineCell>
           </TableRow>

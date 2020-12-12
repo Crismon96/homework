@@ -30,7 +30,7 @@ export default class DataStore {
     return newTimer;
   }
 
-  updateTimer(timerUpdate: RootMutationUpdateTimerArgs) {
+  updateTimer({ timer: timerUpdate }: RootMutationUpdateTimerArgs) {
     const existingTimer = this.timers.find((timer) => timer.id === timerUpdate.id);
 
     if (!existingTimer) {
@@ -39,7 +39,7 @@ export default class DataStore {
 
     const timerIndex = this.timers.indexOf(existingTimer);
 
-    this._timers.splice(timerIndex, 1, timerUpdate);
+    this._timers[timerIndex] = timerUpdate;
     return timerUpdate;
   }
 

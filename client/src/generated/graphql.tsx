@@ -45,13 +45,17 @@ export type RootMutationCreateTimerArgs = {
 
 
 export type RootMutationUpdateTimerArgs = {
-  id: Scalars['ID'];
+  timer: TimerUpdate;
+};
+
+export type TimerCreation = {
   description: Scalars['String'];
   from: Scalars['Date'];
   until: Scalars['Date'];
 };
 
-export type TimerCreation = {
+export type TimerUpdate = {
+  id: Scalars['ID'];
   description: Scalars['String'];
   from: Scalars['Date'];
   until: Scalars['Date'];
@@ -70,6 +74,32 @@ export type Timer = {
   from: Scalars['Date'];
   until: Scalars['Date'];
 };
+
+export type GetTimerQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetTimerQuery = (
+  { __typename?: 'RootQuery' }
+  & { timer: (
+    { __typename?: 'Timer' }
+    & Pick<Timer, 'id' | 'description' | 'from' | 'until'>
+  ) }
+);
+
+export type UpdateTimerMutationVariables = Exact<{
+  timer: TimerUpdate;
+}>;
+
+
+export type UpdateTimerMutation = (
+  { __typename?: 'RootMutation' }
+  & { updateTimer: (
+    { __typename?: 'Timer' }
+    & Pick<Timer, 'id' | 'description' | 'from' | 'until'>
+  ) }
+);
 
 export type TimerListQueryVariables = Exact<{
   offset: Scalars['Int'];
@@ -98,17 +128,6 @@ export type CreateTimerMutationVariables = Exact<{
 export type CreateTimerMutation = (
   { __typename?: 'RootMutation' }
   & { createTimer: (
-    { __typename?: 'Timer' }
-    & Pick<Timer, 'id' | 'description' | 'from' | 'until'>
-  ) }
-);
-
-export type Unnamed_1_QueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type Unnamed_1_Query = (
-  { __typename?: 'RootQuery' }
-  & { timer: (
     { __typename?: 'Timer' }
     & Pick<Timer, 'id' | 'description' | 'from' | 'until'>
   ) }
