@@ -12,7 +12,7 @@ export default class DataStore {
     return this._timers;
   }
 
-  createTimer(timer: RootMutationCreateTimerArgs) {
+  createTimer({ timer }: RootMutationCreateTimerArgs) {
     const newTimer: typeof timersDefinition[0] = {
       // This is just a pseudo random ID, no need for a real one right now.
       // This should be replaced with a robust uuid

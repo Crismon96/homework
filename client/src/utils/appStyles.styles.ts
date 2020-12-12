@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const Main = styled.main`
   margin: 0 4rem;
   padding: 1rem 0 0;
+  height: 100vh;
   position: relative;
   overflow: visible !important;
 `;

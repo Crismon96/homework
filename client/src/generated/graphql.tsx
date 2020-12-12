@@ -40,14 +40,18 @@ export type RootMutation = {
 
 
 export type RootMutationCreateTimerArgs = {
-  description: Scalars['String'];
-  from: Scalars['Date'];
-  until: Scalars['Date'];
+  timer: TimerCreation;
 };
 
 
 export type RootMutationUpdateTimerArgs = {
   id: Scalars['ID'];
+  description: Scalars['String'];
+  from: Scalars['Date'];
+  until: Scalars['Date'];
+};
+
+export type TimerCreation = {
   description: Scalars['String'];
   from: Scalars['Date'];
   until: Scalars['Date'];
@@ -60,6 +64,19 @@ export type Timer = {
   from: Scalars['Date'];
   until: Scalars['Date'];
 };
+
+export type CreateTimerMutationVariables = Exact<{
+  timer: TimerCreation;
+}>;
+
+
+export type CreateTimerMutation = (
+  { __typename?: 'RootMutation' }
+  & { createTimer: (
+    { __typename?: 'Timer' }
+    & Pick<Timer, 'id' | 'description' | 'from' | 'until'>
+  ) }
+);
 
 export type Unnamed_1_QueryVariables = Exact<{ [key: string]: never; }>;
 
