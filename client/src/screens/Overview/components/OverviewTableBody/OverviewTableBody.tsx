@@ -18,6 +18,10 @@ function OverviewTableBody({ timers, setEditTimerId }: Props) {
           <TableRow key={singleTimer.id} hover>
             <TableCell>{singleTimer.description}</TableCell>
 
+            <TableCell>{singleTimer.from}</TableCell>
+
+            <TableCell>{singleTimer.until}</TableCell>
+
             <OneLineCell align="right">
               <IconButton
                 size="medium"
