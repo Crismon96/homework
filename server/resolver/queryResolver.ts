@@ -8,7 +8,10 @@ const queryResolver = {
       return new Timer(id, dataStore);
     },
     timers(_: unknown, { limit, offset, filter }: RootQueryTimersArgs) {
-      return dataStore.timers.map((timer) => new Timer(timer.id, dataStore));
+      return {
+        totalCount: dataStore.timers.length,
+        timers: dataStore.timers.map((timer) => new Timer(timer.id, dataStore)),
+      };
     },
   },
 };

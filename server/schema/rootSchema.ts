@@ -8,7 +8,7 @@ scalar Date
 
 type RootQuery {
   timer(id: ID!): Timer!
-  timers(offset: Int!, limit: Int!, filter: String): [Timer!]!
+  timers(offset: Int!, limit: Int!, filter: String): TimersResult!
 }
 
 # Mutations ------------------------------------------------------------------------------------------------------------
@@ -24,6 +24,11 @@ input TimerCreation {
   description: String!
   from: Date!
   until: Date!
+}
+
+type TimersResult {
+  totalCount: Int!
+  timers: [Timer!]!
 }
 
 type Timer {

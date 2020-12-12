@@ -17,7 +17,7 @@ export type Scalars = {
 export type RootQuery = {
   __typename?: 'RootQuery';
   timer: Timer;
-  timers: Array<Timer>;
+  timers: TimersResult;
 };
 
 
@@ -57,6 +57,12 @@ export type TimerCreation = {
   until: Scalars['Date'];
 };
 
+export type TimersResult = {
+  __typename?: 'TimersResult';
+  totalCount: Scalars['Int'];
+  timers: Array<Timer>;
+};
+
 export type Timer = {
   __typename?: 'Timer';
   id: Scalars['ID'];
@@ -64,6 +70,25 @@ export type Timer = {
   from: Scalars['Date'];
   until: Scalars['Date'];
 };
+
+export type TimerListQueryVariables = Exact<{
+  offset: Scalars['Int'];
+  limit: Scalars['Int'];
+  filter?: Maybe<Scalars['String']>;
+}>;
+
+
+export type TimerListQuery = (
+  { __typename?: 'RootQuery' }
+  & { timers: (
+    { __typename?: 'TimersResult' }
+    & Pick<TimersResult, 'totalCount'>
+    & { timers: Array<(
+      { __typename?: 'Timer' }
+      & Pick<Timer, 'id' | 'description' | 'from' | 'until'>
+    )> }
+  ) }
+);
 
 export type CreateTimerMutationVariables = Exact<{
   timer: TimerCreation;
