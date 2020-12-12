@@ -15,18 +15,17 @@ function Timer() {
   const [displayValue, setDisplayValue] = useState('Welcome, press start to track you time.');
   const [recordedTime, setRecordedTime] = useState(0);
   const secondsRecorded = useRef<number>(0);
+  const secondsIntervall = useRef<number>();
 
   const formHookMethods = useForm();
   const { reset, register, errors, setValue, handleSubmit, control } = formHookMethods;
 
   const { createTimer } = useCreateTimer();
 
-  let secondsIntervall: number;
-
   const handleStartTimer = () => {
     setIsMeassuring(true);
     setValue('from', new Date().toISOString());
-    secondsIntervall = setInterval(() => {
+    secondsIntervall.current = setInterval(() => {
       secondsRecorded.current++;
       setRecordedTime(secondsRecorded.current);
     }, 1000);
@@ -41,8 +40,12 @@ function Timer() {
   };
 
   const handleResetTimer = () => {
-    setIsMeassuring(false);
+    clearInterval(secondsIntervall.current);
+    secondsRecorded.current = 0;
+
     reset();
+
+    setIsMeassuring(false);
     setDisplayValue('Welcome, press start to track you time.');
   };
 
@@ -50,8 +53,6 @@ function Timer() {
     const timerCreationResult = await createTimer(data);
     if (timerCreationResult) {
       setDisplayValue('Time saved successfully!');
-
-      setTimeout(() => handleResetTimer, 10000);
     } else {
       setDisplayValue('An error occured. Please try again or contact me for support');
     }
@@ -60,7 +61,7 @@ function Timer() {
 
   useEffect(() => {
     return () => {
-      clearInterval(secondsIntervall);
+      clearInterval(secondsIntervall.current);
     };
     // this should only run on unmount and not if the dependency changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
