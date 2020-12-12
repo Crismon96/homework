@@ -18,9 +18,11 @@ function Timer() {
   const secondsIntervall = useRef<number>();
 
   const formHookMethods = useForm();
-  const { reset, register, errors, setValue, handleSubmit, control } = formHookMethods;
+  const { reset, register, errors, setValue, handleSubmit, control, trigger } = formHookMethods;
 
   const { createTimer } = useCreateTimer();
+
+  const hasErrors = Object.keys(errors).length > 0;
 
   const handleStartTimer = () => {
     setIsMeassuring(true);
@@ -31,12 +33,15 @@ function Timer() {
     }, 1000);
   };
 
-  const handleStopTimer = () => {
+  const handleStopTimer = async () => {
     setValue('until', new Date().toISOString());
-    setIsMeassuring(false);
 
     // Send the form directly after stop. This could be improved.
     handleSubmit(submitTimer)();
+    const isValid = await trigger();
+    if (isValid) {
+      setIsMeassuring(false);
+    }
   };
 
   const handleResetTimer = () => {
@@ -81,7 +86,7 @@ function Timer() {
           <TimerDescriptionInput control={control} errors={errors} />
 
           <TimerActionButtons>
-            <IconButton disabled={!isMeassuring}>
+            <IconButton disabled={!isMeassuring || hasErrors}>
               <StopIcon fontSize="large" onClick={handleStopTimer} />
             </IconButton>
 

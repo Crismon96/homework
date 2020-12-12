@@ -1,10 +1,10 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
+import { Controller, UseFormMethods } from 'react-hook-form';
 import { TimerDescriptionInput as TimerDescriptionInputField } from '../../screens/Timer/timer.styles';
 
 type Props = {
-  control: any;
-  errors: any;
+  control: UseFormMethods['control'];
+  errors: UseFormMethods['errors'];
 };
 
 function TimerDescriptionInput({ control, errors }: Props) {

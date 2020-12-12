@@ -12,7 +12,7 @@ function SideNavigation() {
               Timer
             </NavigationItem>
 
-            <NavigationItem to="/overview">{'Overview'}</NavigationItem>
+            <NavigationItem to="/overview">Overview</NavigationItem>
           </NavigationItemsContainer>
         </NavigationContainer>
       </Suspense>
