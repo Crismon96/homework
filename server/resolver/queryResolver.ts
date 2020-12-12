@@ -7,11 +7,9 @@ const queryResolver = {
     timer(_: unknown, { id }: RootQueryTimerArgs) {
       return new Timer(id, dataStore);
     },
-    timers(_: unknown, { limit, offset, filter }: RootQueryTimersArgs) {
-      return {
-        totalCount: dataStore.timers.length,
-        timers: dataStore.timers.map((timer) => new Timer(timer.id, dataStore)),
-      };
+    timers(_: unknown, paginationParameters: RootQueryTimersArgs) {
+      const timersList = dataStore.getTimersList(paginationParameters);
+      return timersList;
     },
   },
 };

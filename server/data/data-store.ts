@@ -1,4 +1,10 @@
-import { RootMutationCreateTimerArgs, RootMutationUpdateTimerArgs } from '../types/generated/graphql';
+import { Timer } from '../entities/timer';
+import { dataStore } from '../server';
+import {
+  RootMutationCreateTimerArgs,
+  RootMutationUpdateTimerArgs,
+  RootQueryTimersArgs,
+} from '../types/generated/graphql';
 import timersDefinition from './timers.json';
 
 export default class DataStore {
@@ -35,5 +41,21 @@ export default class DataStore {
 
     this._timers.splice(timerIndex, 1, timerUpdate);
     return timerUpdate;
+  }
+
+  getTimersList({ offset, limit, filter }: RootQueryTimersArgs) {
+    if (filter) {
+      const toLowerCaseFilter = filter.toLowerCase();
+      const filteredTimers = this.timers.filter((timer) => timer.description.toLowerCase().includes(toLowerCaseFilter));
+      return {
+        totalCount: filteredTimers.length,
+        timers: filteredTimers.slice(offset, offset + limit).map((timer) => new Timer(timer.id, dataStore)),
+      };
+    }
+
+    return {
+      totalCount: dataStore.timers.length,
+      timers: dataStore.timers.slice(offset, offset + limit).map((timer) => new Timer(timer.id, dataStore)),
+    };
   }
 }

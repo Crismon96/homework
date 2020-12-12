@@ -6,8 +6,7 @@ function OverviewTableHeader() {
     <TableHead>
       <TableRow>
         <TableCell>Description</TableCell>
-        <TableCell>Actions</TableCell>
-        <TableCell />
+        <TableCell align="right">Actions</TableCell>
       </TableRow>
     </TableHead>
   );
