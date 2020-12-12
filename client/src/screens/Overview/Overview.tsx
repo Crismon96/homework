@@ -1,16 +1,17 @@
 import { useQuery } from '@apollo/client';
-import { Table, TableFooter, TablePagination } from '@material-ui/core';
+import { Button, Table, TableFooter, TablePagination } from '@material-ui/core';
 import React, { useState } from 'react';
 import { TimerListQuery, TimerListQueryVariables } from '../../generated/graphql';
 import OverviewTableBody from './components/OverviewTableBody/OverviewTableBody';
 import OverviewTableHeader from './components/OverviewTableHeader/OverviewTableHeader';
-import { FullBodyTableContainer } from './overview.styles';
+import { FilterInput, FullBodyTableContainer } from './overview.styles';
 import { timerListQuery } from './queries/overview.queries';
 
 export function Overview() {
   const [activePage, setActivePage] = useState(0);
   const [timersPerPage, setTimersPerPage] = useState(10);
-  const [filterString, setfilterString] = useState('');
+  const [filterString, setFilterString] = useState('');
+  const [filterInputValue, setFilterInputValue] = useState('');
   // const [showDashboardDialog, setShowDashboardDialog] = useState(false);
 
   const { data, loading } = useQuery<TimerListQuery, TimerListQueryVariables>(timerListQuery, {
@@ -24,12 +25,7 @@ export function Overview() {
     description?.toLowerCase().includes(lowerCaseFilterString)
   );
 
-  const anyTimerExist = Boolean(data?.timers.totalCount);
-
-  if (!loading && !anyTimerExist) {
-    // Here show 'is empty' message
-    return null;
-  } else if (!data && loading) {
+  if (!data && loading) {
     // show loading spinner
     return null;
   } else if (data) {
@@ -53,6 +49,16 @@ export function Overview() {
             page={activePage}
             rowsPerPage={timersPerPage}
           />
+
+          {/* A workaround because I dont have time to debounce the input and I only want to filter when the user stops typing */}
+          <FilterInput
+            value={filterInputValue}
+            onChange={(event) => setFilterInputValue(event.target.value)}
+            label={'Filter your timer for description'}
+            InputProps={{ id: 'timerFilter' }}
+            InputLabelProps={{ htmlFor: 'timerFilter' }}
+          />
+          <Button onClick={() => setFilterString(filterInputValue)}>Search!</Button>
         </TableFooter>
       </>
     );

@@ -1,4 +1,4 @@
-import { TableContainer } from '@material-ui/core';
+import { TableContainer, TextField } from '@material-ui/core';
 import styled from 'styled-components';
 
 export const FullBodyTableContainer = styled(TableContainer)`
@@ -7,4 +7,9 @@ export const FullBodyTableContainer = styled(TableContainer)`
   max-height: calc(100vh - 10rem - 53px);
   margin: 0 -1rem;
   width: calc(100% + 2rem);
+`;
+
+export const FilterInput = styled(TextField)`
+  margin: 5rem;
+  width: 25rem;
 `;
